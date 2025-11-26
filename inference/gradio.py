@@ -4,7 +4,7 @@ import torch
 from models.vlm import VLMChatbot
 
 # Load model - set checkpoint_path to your trained model
-CHECKPOINT_PATH = None  # Set to "checkpoints/vlm_projection_best.pth" after training
+CHECKPOINT_PATH = "checkpoints/vlm_projection_best_improved.pth"
 
 model = VLMChatbot(
     load_in_4bit=True,
@@ -22,15 +22,9 @@ def chat_with_image(image, question, history):
         with torch.no_grad():
             response = model.chat(temp_path, question, max_new_tokens=150)
 
-        print(f"DEBUG - Question: {question}")
-        print(f"DEBUG - Response: '{response}'")
-        print(f"DEBUG - Response length: {len(response)}")
-
-        # If response is empty, use a placeholder
         if not response or len(response.strip()) == 0:
             response = "[Model generated empty response - model needs training]"
 
-        # Gradio chatbot expects messages with 'role' and 'content' format
         history.append({"role": "user", "content": question})
         history.append({"role": "assistant", "content": response})
         return history, history
