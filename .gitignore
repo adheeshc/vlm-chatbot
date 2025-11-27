@@ -220,3 +220,4 @@ offload/*
 
 #data
 data/*
+!data/__init__.py
